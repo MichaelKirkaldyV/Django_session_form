@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Session Words App</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'session_words_app/css/style.css' %}">
+</head>
+<body>
+	<div class="container">
+		<div class="left">
+			<form action="/word_process" method="POST">
+				<!-- Dont forget to add the CSRF TOKEN!! !-->
+				{% csrf_token %}
+				<label>Add a new word</label>
+				<input class="word" type="text" name="word">
+				<h3>Choose a color:</h3>
+				<input type="radio" name="color" value="Red">Red
+				<input type="radio" name="color" value="Blue">Blue
+				<input type="radio" name="color" value="Green">Green
+				<div class="check">
+					<input  class="checkbox" type="checkbox" name="font">
+					<label class="font_label">Show in Big Font</label>
+				</div>
+				<input class="submit" type="submit" name="submit" value="Add to session">
+			</form>
+		</div>
+		<div class="right">
+			<div class="list">
+				{% for word in request.session.list %}
+					<p><span class="{{ word.color }} {{ word.font }}">{{ word.word }}</span> - added on {{ word.time }}</p>
+				{% endfor %}
+				<a href="/">Clear Session</a>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
